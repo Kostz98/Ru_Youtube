@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+            color: #c61717;
+            position: relative;
+        }
+        h1 {
+            color: #d32f2f;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #d32f2f;
+            border-radius: 5px;
+            margin-right: 5px;
+            font-size: 16px;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button-login {
+            position: absolute;
+            top: 50px;
+            right: 2px;
+            padding: 10px 20px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        video {
+            width: 80%;
+            max-width: 800px;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .upload-link {
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            padding: 10px 20px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        body, h1, video {
+            background-color: #212121;
+            color: #fff;
+        }
+
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        video {
+            border-radius: 10px;
+            margin: 10px;
+        }
+    </style>
+    <title>RU_YouTube</title>
+</head>
+<body>
+    <h1>RU_YouTube</h1>
+    <form action="/search" method="GET">
+        <input type="text" name="query" placeholder="Поиск видео">
+        <button type="submit">Найти</button>
+        <a href="/login" class="button-login">Аккаунт</a>
+    </form>
+    <a href="/upload_video" class="upload-link">Загрузить видео</a>
+    <img src="{{ url_for('static', filename='youtube-logo.png') }}" alt="Логотип RU_YouTube" class="logo" style="width: 200px; height: 85px;">
+    <div class="video-container">
+        {% for video in video_files %}
+            {% set video_name = video.split('.')[0] %}
+            <h2>{{ video_name }}</h2>
+            <video controls allowfullscreen id="fullscreen-video-{{ loop.index }}">
+                <source src="{{ url_for('static', filename=video) }}" type="video/mp4">
+                <source src="{{ url_for('static', filename=video.replace('.mp4', '.ogg')) }}" type="video/ogg">
+                <source src="{{ url_for('static', filename=video.replace('.mp4', '.webm')) }}" type="video/webm">
+                <source src="{{ url_for('static', filename=video.replace('.mp4', '.mov')) }}" type="video/quicktime">
+                Ваш браузер не поддерживает тег video.
+            </video>
+            <button onclick="openFullscreen('fullscreen-video-{{ loop.index }}')">Увеличить на весь экран</button>
+        {% endfor %}
+    </div>
+
+    <script>
+    function openFullscreen(videoId) {
+        var elem = document.getElementById(videoId);
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        }
+    }
+
+    document.onkeydown = function (e) {
+        e = e || window.event;
+
+        if (e.keyCode === 37) {
+            for (let video of document.getElementsByTagName('video')) {
+                video.currentTime -= 5;
+            }
+        } else if (e.keyCode === 39) {
+            for (let video of document.getElementsByTagName('video')) {
+                video.currentTime += 5;
+            }
+        } else if (e.keyCode === 38) {
+            for (let video of document.getElementsByTagName('video')) {
+                var currentVolume = video.volume;
+                if (currentVolume + 0.05 <= 1.0) {
+                    video.volume += 0.05;
+                }
+            }
+        } else if (e.keyCode === 40) {
+            for (let video of document.getElementsByTagName('video')) {
+                var currentVolume = video.volume;
+                if (currentVolume - 0.05 >= 0.0) {
+                    video.volume -= 0.05;
+                }
+            }
+        }
+    };
+    </script>
+</body>
+</html>
+

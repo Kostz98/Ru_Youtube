@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Войдите или зарегистрируйтесь</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #4285f4;
+            color: #fff;
+            padding: 20px;
+            border-radius: 0 0 20px 20px; /* Скругление нижних углов */
+        }
+        .button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px; /* Скругление углов */
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .login-button {
+            background-color: #d32f2f;
+            color: white;
+        }
+        .register-button {
+            background-color: #c61717;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Войдите или зарегистрируйтесь</h1>
+    </div>
+    <button class="button login-button" onclick="redirectToLoginPage()">Войти</button>
+    <button class="button register-button" onclick="redirectToRegistrationPage()">Зарегистрироваться</button>
+
+    <script>
+        function redirectToLoginPage() {
+            window.location.href = "/login_to_account"; // Перенаправление на страницу входа в аккаунт
+        }
+
+        function redirectToRegistrationPage() {
+            window.location.href = "/registration"; // Перенаправление на страницу регистрации
+        }
+    </script>
+</body>
+</html>
+
